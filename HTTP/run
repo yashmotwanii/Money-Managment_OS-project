@@ -1,0 +1,3 @@
+ gcc test.c http.c -o http_req
+ ./http_req "website" 
+"website"=www.google.com(example)

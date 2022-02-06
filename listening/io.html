@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="d1">
+<h2>Input output</h2>
+
+  <label for="fname">User 1:</label><br>
+  <input type="text" id="fname" name="fname"><br>
+  <label for="lname">User 2:</label><br>
+  <input type="text" id="lname" name="lname"><br>
+  <label for="amt">Amount :</label><br>
+  <input type="number" id="amt" name="amt"><br><br>
+  <input type="button" value="Submit" onclick="doit()">
+</div>
+<div id="d2" style="display: none">
+  <label id="u1">First name : </label><br><br>
+  
+  <label id="u2">Last name : </label><br><br>
+  
+  <label id="amts">Amount : </label><br><br>
+  <label id="p1"></label><br><br>
+</div>
+</body>
+<script>
+	function doit(){
+        document.getElementById("d2").style.display = "block";
+        document.getElementById("d1").style.display = "none";
+
+    	document.getElementById("u1").innerHTML += document.getElementById("fname").value;
+    	document.getElementById("u2").innerHTML += document.getElementById("lname").value;
+    	document.getElementById("amts").innerHTML += document.getElementById("amt").value;
+
+      var xhr = new XMLHttpRequest();
+      var url = "http://localhost:3490/save";
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "text/plain");
+      xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          document.getElementById("p1").innerHTML += "Response /save : "+xhr.status
+      }
+      };
+      var data = "User1 : "+document.getElementById("fname").value+"\nUser2 : "+document.getElementById("lname").value+"\nAmount : "+document.getElementById("amt").value;
+      xhr.send(data);
+      setTimeout(function (){
+
+
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:3490/saveln";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("p1").innerHTML += " | Response /saveln : "+xhr.status
+        }
+        };
+        var data = document.getElementById("fname").value+" "+document.getElementById("lname").value+" "+document.getElementById("amt").value;
+        xhr.send(data);
+      },500)
+        
+    }
+
+</script>
+</html>
